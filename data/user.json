@@ -1,0 +1,17 @@
+{
+  "user":
+  [
+    {
+      "DisplayName": "Ellie Routh",
+      "EmailAddress": "ellierouth@live.ca",
+      "Username": "elliestrong",
+      "Password": "123456"
+    },
+    {
+      "DisplayName": "admin",
+      "EmailAddress": "admin@live.ca",
+      "Username": "admin",
+      "Password": "789321"
+    }
+  ]
+}

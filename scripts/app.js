@@ -5,6 +5,8 @@
 
     function DisplayHomePage(){
 
+
+
         //switch page to about us page when button is clicked
         $("#AboutUsBtn").on("click", () => {
            location.href = "about.html"
@@ -39,12 +41,13 @@
 
         sendButton.addEventListener("click", function ()
         {
+            ContactFormValidation();
 
-           if(subscribeCheckBox.checked){
+            if(subscribeCheckBox.checked){
                 AddContact(document.getElementById("FullName").value,
                             document.getElementById("PhoneNumber").value,
                             document.getElementById("EmailAddress").value);
-           }
+            }
         });
     }
 
@@ -149,6 +152,49 @@
         }
     }
 
+    function DisplayLoginPage(){
+        console.log("login page");
+
+        let messageArea = $("#messageArea");
+        messageArea.hide();
+
+        $("#loginButton").on("click", function(){
+
+            console.log("you pressed the button");
+
+            let success = false;
+            let newUser = new core.User();
+
+            $.get("./data/user.json", function(data){
+                for(const user of data.user){
+                    if(userName.value === user.Username && password.value === user.Password){
+                        newUser.fromJSON(user);
+                        success = true;
+                        break;
+                    }
+                }
+                if(success){
+                    sessionStorage.setItem("user", newUser.serialize());
+                    messageArea.removeAttr("class").hide();
+                    location.href = "contact-list.html";
+                }else{
+                    $("userName").trigger("focus").trigger("select");
+                    messageArea.addClass("alert alert-danger")
+                        .text("Error: Invalid Login Credentials").show();
+                }
+
+            });
+        });
+
+        $("#cancelButton").on("click", function(){
+            document.forms[0].reset();
+            location.href = "index.html";
+        });
+
+    }
+    function DisplayRegisterPage(){
+        console.log("register page");
+    }
     /**
      *
      * @param fullName
@@ -164,9 +210,89 @@
         }
     }
 
+    /**
+     *
+     * @param {string}input_field_id
+     * @param {RegExp}regular_expression
+     * @param {string}error_message
+     * @constructor
+     */
+    function ValidateField(input_field_id, regular_expression, error_message){
+        let messageArea = $("#messageArea").hide();
+
+        $(input_field_id).on("blur", function(){
+           let inputFieldText = $(this).val();
+           if(!regular_expression.test(inputFieldText)){
+               $(this).trigger("focus");
+               $(this).trigger("select");
+               messageArea.addClass("alert alert-danger");
+               messageArea.text("Please enter a valid First and Last Name (Firstname [middle] Lastname)");
+               messageArea.show();
+           }else{
+               messageArea.removeAttr("class");
+               messageArea.hide();
+           }
+        });
+    }
+
+    function ContactFormValidation(){
+        ValidateField("#FullName",
+            /^([A-Z][a-z]{1,25})+(\s|,|-)([A-Z][a-z]{1,25})$/,
+            "Please enter a valid first and last name");
+        ValidateField("#PhoneNumber",
+            /^(\+\d{1,3}[\s-.])?\(?\d{3}\)?[\s-.]?\d{3}[\s-.]\d{4}$/,
+            "Please enter a valid phone number");
+        ValidateField("#EmailAddress",
+            /^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,10}$/,
+            "Please enter a valid email address");
+    }
+
+
+    function AjaxRequest(method, url, callback){
+        let XHR = new XMLHttpRequest();
+
+        XHR.addEventListener("readystatechange", ()=>{
+            if(XHR.readyState === 4 && XHR.status === 200){
+                //$("header").html(XHR.responseText);
+                //$(`li>a:contains( ${document.title})`).addClass("active");
+                if(typeof callback === "function"){
+                    callback(XHR.responseText);
+                }else{
+                    console.error("ERROR: callback not a function")
+                }
+            }
+        });
+
+        XHR.open(method, url);
+
+        XHR.send();
+    }
+
+    function LoadHeader(html_data){
+        $("header").html(html_data);
+        $(`li>a:contains(${document.title})`).addClass("active");
+        CheckLogin();
+    }
+
+
+    function CheckLogin(){
+        if(sessionStorage.getItem("user")){
+            $("#login").html(`<a id="logout" class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i>Logout</a>`)
+        }
+
+        $("#logout").on("click", function(){
+            console.log("i pressed logout now what");
+           sessionStorage.clear();
+
+           location.href = "index.html";
+        });
+    }
+
     function Start()
     {
         console.log("App Started!")
+
+        AjaxRequest("GET", "header.html", LoadHeader);
         switch(document.title){
             case "Home":
                 DisplayHomePage();
@@ -188,6 +314,12 @@
                 break;
             case "Edit Contact":
                 DisplayEditPage();
+                break;
+            case "Login":
+                DisplayLoginPage();
+                break;
+            case "Register":
+                DisplayRegisterPage();
                 break;
         }
     }
