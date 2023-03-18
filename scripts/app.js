@@ -1,407 +1,379 @@
-(function(){
-
-    /*
-    Names: Avery Routh, Veronica Gibb
-    Student IDs: 100666214, 100708836
-    Date completed: Jan 27th 2023
-     */
-
-    window.addEventListener("load", Start)
-
-    function DisplayHomePage(){
-        console.log('this is my home page');
-        //switch page to about us page when button is clicked
-        let AboutUsButton = document.getElementById("AboutUsBtn");
-        AboutUsButton.addEventListener("click",function (){
-            location.href = "about.html"
+"use strict";
+(function () {
+    function AuthGuard() {
+        let protected_routes = [
+            "contact-list"
+        ];
+        if (protected_routes.indexOf(router.ActiveLink) > -1) {
+            if (!sessionStorage.getItem("user")) {
+                router.ActiveLink = "login";
+            }
+        }
+    }
+    function LoadLink(link, data = "") {
+        router.ActiveLink = link;
+        AuthGuard();
+        router.LinkData = data;
+        history.pushState({}, "", router.ActiveLink);
+        document.title = router.ActiveLink.substring(0, 1).toUpperCase() + router.ActiveLink.substring(1);
+        $("ul>li>a").each(function () {
+            $(this).removeClass("active");
         });
-
-        //set a dynamic first paragraph
-        let body = document.getElementsByTagName("div")[3];
-        let para = document.createElement('p');
-
-        para.setAttribute("id", "para");
-        para.setAttribute("class","mt-3");
-        para.textContent = "Hello welcome to my portfolio website where you can see examples of my work."
-        body.appendChild(para);
-
-
-        let navbar = document.getElementsByClassName("navbar-nav ms-auto mb-2 mb-lg-0")[0];
-        let newItem = document.createElement("li");
-
-        newItem.setAttribute("class","nav-item");
-
-
-
-        newItem.innerHTML = "<li class=\"nav-item\">\n" +
-            "                            <a class=\"nav-link\" aria-current=\"page\" href=\"index.html\">\n" +
-            "                                <i class=\"fa-solid fa-house-user\"></i> Human Resources\n" +
-            "                            </a>\n" +
-            "                        </li>";
-
-        navbar.insertBefore(newItem, navbar.children[4]);
-
+        $(`li>a:contains(${document.title})`).addClass("active");
+        CheckLogin();
+        LoadContent();
     }
-
-
-    function DisplayProjectsPage(){
-        console.log("this is the projects page")
-        //adding text.
-        let body = document.getElementsByClassName("col")[1];
-        let para = document.createElement('p');
-
-        para.setAttribute("id", "para");
-        para.setAttribute("class","mt-3");
-        para.setAttribute("float", "right");
-        para.textContent = "We were tasked with creating a nature diorama that was small in scale with some degree " +
-                            "of man-made structures that had been overtaken by nature. I based my project off of the " +
-                            "roads leading to old Japanese shrines, set on a foggy day."
-        body.appendChild(para);
-        let body2 = document.getElementsByClassName("col")[2];
-        let para2 = document.createElement('p');
-
-        para2.setAttribute("id", "para2");
-        para2.setAttribute("class","mt-3");
-        para2.textContent = "This was a personal project for an art test. I was asked to create a smokescreen effect" +
-                            " based on the smoke screen from the old splinter cell games. Once I submitted my art test" +
-                            " the person running it said I had created what he wanted perfectly, which is why I am " +
-                            "including it here."
-        body2.appendChild(para2);
-
-        let body3 = document.getElementsByClassName("col")[5];
-        let para3 = document.createElement('p');
-
-        para3.setAttribute("id", "para3");
-        para3.setAttribute("class","mt-3");
-        para3.textContent = "My goal was to create a system that would allow the player to teleport to a point" +
-                            " they are pointing at. It spawns a ball based on ray trace lines that sets the location " +
-                            "for the player to teleport for. I did this as a personal project to try and recreate the " +
-                            "teleportation system from the Dishonored games, and while far from perfect I feel like my " +
-                            "system works fairly well."
-        body3.appendChild(para3);
-
-
-
-        let navbar = document.getElementsByClassName("navbar-nav ms-auto mb-2 mb-lg-0")[0];
-        let newItem = document.createElement("li");
-
-        newItem.setAttribute("class","nav-item");
-
-
-
-        newItem.innerHTML = "<li class=\"nav-item\">\n" +
-            "                            <a class=\"nav-link\" aria-current=\"page\" href=\"index.html\">\n" +
-            "                                <i class=\"fa-solid fa-house-user\"></i> Human Resources\n" +
-            "                            </a>\n" +
-            "                        </li>";
-
-        navbar.insertBefore(newItem, navbar.children[4]);
-
-    }
-
-    function DisplayServicesPage(){
-        let ServiceContent1 = document.getElementsByTagName("ServiceBody1")[0];
-        let ServiceParagraph1 = document.createElement("p");
-        ServiceParagraph1.setAttribute("id","ProductParagraph")
-        ServiceParagraph1.setAttribute("class","mt-3")
-        ServiceParagraph1.textContent = "We are good at lots of things.  One is web design"
-        ServiceContent1.appendChild(ServiceParagraph1);
-
-        let ServiceContent2 = document.getElementsByTagName("ServiceBody2")[0];
-        let ServiceParagraph2 = document.createElement("p");
-        ServiceParagraph2.setAttribute("id","ServiceParagraph2")
-        ServiceParagraph2.setAttribute("class","mt-3")
-        ServiceParagraph2.textContent = "We are good at lots of things.  One is custom programing"
-        ServiceContent2.appendChild(ServiceParagraph2);
-
-        let ServiceContent3 = document.getElementsByTagName("ServiceBody3")[0];
-        let ServiceParagraph3 = document.createElement("p");
-        ServiceParagraph3.setAttribute("id","ServiceParagraph3")
-        ServiceParagraph3.setAttribute("class","mt-3")
-        ServiceParagraph3.textContent = "We are good at lots of things.  One is Mobile development"
-        ServiceContent3.appendChild(ServiceParagraph3);
-
-
-
-        let navbar = document.getElementsByClassName("navbar-nav ms-auto mb-2 mb-lg-0")[0];
-        let newItem = document.createElement("li");
-
-        newItem.setAttribute("class","nav-item");
-
-
-
-        newItem.innerHTML = "<li class=\"nav-item\">\n" +
-            "                            <a class=\"nav-link\" aria-current=\"page\" href=\"index.html\">\n" +
-            "                                <i class=\"fa-solid fa-house-user\"></i> Human Resources\n" +
-            "                            </a>\n" +
-            "                        </li>";
-
-        navbar.insertBefore(newItem, navbar.children[4]);
-
-    }
-
-    function DisplayAboutUsPage(){
-        let AboutContent1 = document.getElementsByTagName("AboutBody1")[0];
-        let AboutParagraph1 = document.createElement("p");
-        AboutParagraph1.setAttribute("id","ProductParagraph")
-        AboutParagraph1.setAttribute("class","mt-3")
-        AboutParagraph1.textContent = "I am Veronica"
-        AboutContent1.appendChild(AboutParagraph1);
-
-        let AboutContent2 = document.getElementsByTagName("AboutBody2")[0];
-        let AboutParagraph2 = document.createElement("p");
-        AboutParagraph2.setAttribute("id","AboutParagraph2")
-        AboutParagraph2.setAttribute("class","mt-3")
-        AboutParagraph2.textContent = "I am Avery"
-        AboutContent2.appendChild(AboutParagraph2);
-
-        let AboutContent3 = document.getElementsByTagName("AboutBody3")[0];
-        let AboutParagraph3 = document.createElement("p");
-        AboutParagraph3.setAttribute("id","AboutParagraph3")
-        AboutParagraph3.setAttribute("class","mt-3")
-        AboutParagraph3.textContent = "We are partners"
-        AboutContent3.appendChild(AboutParagraph3);
-
-
-        let navbar = document.getElementsByClassName("navbar-nav ms-auto mb-2 mb-lg-0")[0];
-        let newItem = document.createElement("li");
-
-        newItem.setAttribute("class","nav-item");
-
-
-
-        newItem.innerHTML = "<li class=\"nav-item\">\n" +
-            "                            <a class=\"nav-link\" aria-current=\"page\" href=\"index.html\">\n" +
-            "                                <i class=\"fa-solid fa-house-user\"></i> Human Resources\n" +
-            "                            </a>\n" +
-            "                        </li>";
-
-        navbar.insertBefore(newItem, navbar.children[4]);
-
-    }
-
-    function DisplayContactPage(){
-
-        let SubmitBtn = document.getElementById("SubmitBtn");
-        SubmitBtn.addEventListener("click",function (){
-            let firstName = document.getElementById("firstName").value;
-            console.log(firstName);
-            let lastName = document.getElementById("lastName").value;
-            console.log(lastName);
-            let contactNumber = document.getElementById("contactNumber").value;
-            console.log(contactNumber);
-            let emailAddress = document.getElementById("emailAddress").value;
-            console.log(emailAddress);
-            let shortMessage = document.getElementById("shortMessage").value;
-            console.log(shortMessage);
-            window.setTimeout(function(){
-
-
-                window.location.href = "index.html";
-
-            }, 3000);
+    function AddNavigationEvents() {
+        let NavLinks = $("ul>li>a");
+        NavLinks.off("click");
+        NavLinks.off("mouseover");
+        NavLinks.on("click", function () {
+            LoadLink($(this).attr("data"));
         });
-
-
-        let navbar = document.getElementsByClassName("navbar-nav ms-auto mb-2 mb-lg-0")[0];
-        let newItem = document.createElement("li");
-
-        newItem.setAttribute("class","nav-item");
-
-
-
-        newItem.innerHTML = "<li class=\"nav-item\">\n" +
-            "                            <a class=\"nav-link\" aria-current=\"page\" href=\"index.html\">\n" +
-            "                                <i class=\"fa-solid fa-house-user\"></i> Human Resources\n" +
-            "                            </a>\n" +
-            "                        </li>";
-
-        navbar.insertBefore(newItem, navbar.children[4]);
-    }
-
-    function loginButton(){
-        let navbar = document.getElementsByClassName("navbar-nav ms-auto mb-2 mb-lg-0")[0];
-        let newItem = document.createElement("li");
-        newItem.setAttribute("class","nav-item");
-        newItem.innerHTML = "<li class=\"nav-item\">\n" +
-            "                            <a class=\"nav-link\" aria-current=\"page\" href=\"login.html\">\n" +
-            "                                <i class=\"fas fa-sign-in-alt\"></i> Login\n" +
-            "                            </a>\n" +
-            "                        </li>";
-
-        navbar.insertBefore(newItem, navbar.children[5]);
-    }
-
-    function DisplayRegisterPage(){
-        console.log("Register Page")
-
-        $("#firstName").noValidate;
-        $("#lastName").noValidate;
-        $("#emailAddress").noValidate;
-        $("#password").noValidate;
-        $("#confirmPassword").noValidate;
-        let submitButton = document.getElementById("submitButton")
-        submitButton.setAttribute("onsubmit", "return false;")
-        let ErrorMessage = document.createElement("div");
-        ErrorMessage.setAttribute("id", "ErrorMessage")
-        ErrorMessage.textContent += "error";
-        let h1 = document.getElementById("h1-register")
-        h1.append(ErrorMessage);
-        $("#ErrorMessage").hide();
-
-        $("#submitButton").on("click",() => {
-            ErrorMessage.textContent = "Error ";
-             console.log(RegisterFormValidation());
-
-            event.preventDefault();
+        NavLinks.on("mouseover", function () {
+            $(this).css("cursor", "pointer");
         });
     }
-    function ValidatePass(input_field_id, conf_input_field_id, error_message){
-        /**
-         * This function will validate a field based on the supplied regex
-         * @param {string} input_field_id
-         * @param {string} confirmed input field
-         * @param {string} error_message
-         */
-
-        let ErrorMessage =$("#ErrorMessage").hide();
-
-        $(input_field_id).on("blur", function(){
-            let input_field_text =$(this).val();
-            let conf_input_field_text =$(conf_input_field_id);
-            if (input_field_text != conf_input_field_text.textContent) {
-                console.log("didnt match the regular expersion");
-                $(this).trigger("focus");
-                $(this).trigger("select");
-                ErrorMessage.addClass("alert alert-danger");
-                ErrorMessage.textContent += error_message;
-                ErrorMessage.show();
-            }
-            if (ErrorMessage.textContent = ""){
-                ErrorMessage.removeAttr("class");
-                ErrorMessage.hide();
-            }
-        })
-
-
-    }
-    function ValidateField(input_field_id, regular_expression, error_message){
-        /**
-         * This function will validate a field based on the supplied regex
-         * @param {string} input_field_id
-         * @param {RegExp} regular_expression
-         * @param {string} error_message
-         */
-
-        let ErrorMessage =$("#ErrorMessage").hide();
-        console.log("time to test the field")
-
-        $(input_field_id).on("blur", function(){
-            let input_field_text =$(this).val();
-            if (!regular_expression.test(input_field_text)) {
-                console.log("didnt match the regular expersion");
-                $(this).trigger("focus")
-                $(this).trigger("select");
-                ErrorMessage.addClass("alert alert-danger")
-                ErrorMessage.textContent += error_message;
-                ErrorMessage.show();
-            }
-            if (ErrorMessage.textContent = ""){
-                ErrorMessage.removeAttr("class");
-                ErrorMessage.hide();
-            }
-        })
-
-
-    }
-    function RegisterFormValidation(){
-
-        let ErrorMessage = $("#ErrorMessage");
-
-        ErrorMessage.textContent = undefined;
-
-        let error = "";
-
-        $("#submitButton").on("click",() => {
-            let firstName = $('#FirstName').val();
-
-            let lastName = $('#lastName').val();
-            if (firstName.length <= 2) {
-                error += ('Error: First Name must be at least 2 characters long.\n');
-            }
-            if (lastName.length <= 2) {
-                error += ('Error: Last Name must be at least 2 characters long.\n');
-            }
-
-
-            let email = $('#emailAddress').val();
-            let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // regex to check for email validity
-
-            if (email.length < 8 || !emailRegex.test(email)) {
-                error += ('Error: email address must have a minimum length of 8 characters and an "@" symbol.\n');
-            }
-
-            let password = $('#password').val();
-            let confirmPassword = $('#confirmPassword').val();
-
-            if (password.length < 6) {
-                error += ('Error: Password must be at least 6 characters long.\n');
-            }
-
-            if (password !== confirmPassword) {
-                error += ('Error: Passwords do not match.\n');
-            }
-
-
-            if(error != ""){
-
-                ErrorMessage.show();
-                ErrorMessage.addClass("alert alert-danger");
-                return "error";
-            }else{
-                ErrorMessage.hide();
-            }
-
+    function AddLinkEvents(link) {
+        let linkQuery = $(`a.link[data=${link}]`);
+        linkQuery.off("click");
+        linkQuery.off("mouseover");
+        linkQuery.off("mouseout");
+        linkQuery.css("text-decoration", "underline");
+        linkQuery.css("color", "blue");
+        linkQuery.on("click", function () {
+            LoadLink(`${link}`);
+        });
+        linkQuery.on("mouseover", function () {
+            $(this).css('cursor', 'pointer');
+            $(this).css('font-weight', 'bold');
+        });
+        linkQuery.on("mouseout", function () {
+            $(this).css('font-weight', 'normal');
         });
     }
-
-    function DisplayFooter(){
-        let bottomNavbar = document.createElement('nav');
-        bottomNavbar.classList.add('navbar', 'navbar-expand-sm', 'navbar-dark', 'bg-dark', 'fixed-bottom');
-        bottomNavbar.id = 'bottom-navbar';
-        bottomNavbar.innerHTML = `<div class="container-fluid">
-        <span class="navbar-text mx-auto">&copy; ${new Date().getFullYear()} - WEBD 6201 SITE</span>
-        </div>`;
-
-        document.body.appendChild(bottomNavbar);
+    function LoadHeader() {
+        $.get("./Views/components/header.html", function (html_data) {
+            $("header").html(html_data);
+            AddNavigationEvents();
+            CheckLogin();
+        });
     }
-
-    function Start()
-    {
-        loginButton();
-        DisplayFooter();
-        console.log("App Started!")
-        switch(document.title){
-            case "Home":
-                DisplayHomePage();
+    function LoadContent() {
+        let page_name = router.ActiveLink;
+        let callback = ActiveLinkCallBack();
+        $.get(`./Views/content/${page_name}.html`, function (html_date) {
+            $("main").html(html_date);
+            callback();
+        });
+    }
+    function LoadFooter() {
+        $.get(`./Views/components/footer.html`, function (html_date) {
+            $("footer").html(html_date);
+        });
+    }
+    function DisplayHomePage() {
+        console.log("Home Page");
+        $("#AboutUsButton").on("click", () => {
+            LoadLink("about");
+        });
+        $("main").append(`<p id="MainParagraph" class="mt-3">This is the Main Paragraph</p>`);
+        $("main").append(`<article>
+        <p id="ArticleParagraph" class ="mt-3">This is the Article Paragraph</p>
+        </article>`);
+    }
+    function DisplayProductsPage() {
+        console.log("Products Page");
+    }
+    function DisplayServicesPage() {
+        console.log("Services Page");
+    }
+    function DisplayAboutPage() {
+        console.log("About Page");
+    }
+    function AddContact(fullName, contactNumber, emailAddress) {
+        let contact = new core.Contact(fullName, contactNumber, emailAddress);
+        if (contact.serialize()) {
+            let key = contact.FullName.substring(0, 1) + Date.now();
+            localStorage.setItem(key, contact.serialize());
+        }
+    }
+    function ValidateField(fieldID, regular_expression, error_message) {
+        let messageArea = $("#messageArea").hide();
+        $("#" + fieldID).on("blur", function () {
+            let text_value = $(this).val();
+            if (!regular_expression.test(text_value)) {
+                $(this).trigger("focus").trigger("select");
+                messageArea.addClass("alert alert-danger").text(error_message).show();
+            }
+            else {
+                messageArea.removeAttr("class").hide();
+            }
+        });
+    }
+    function ContactFormValidation() {
+        ValidateField("fullName", /^([A-Z][a-z]{1,3}.?\s)?([A-Z][a-z]{1,})((\s|,|-)([A-Z][a-z]{1,}))*(\s|,|-)([A-Z][a-z]{1,})$/, "Please enter a valid Full Name. This must include at least a Capitalized First Name and a Capitalized Last Name.");
+        ValidateField("contactNumber", /^(\+\d{1,3}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/, "Please enter a valid Contact Number. Example: (416) 555-5555");
+        ValidateField("emailAddress", /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$/, "Please enter a valid Email Address.");
+    }
+    function DisplayContactPage() {
+        console.log("Contact Page");
+        $("a[data='contact-list']").off("click");
+        $("a[data='contact-list']").on("click", function () {
+            LoadLink("contact-list");
+        });
+        ContactFormValidation();
+        let sendButton = document.getElementById("sendButton");
+        let subscribeCheckbox = document.getElementById("subscribeCheckbox");
+        sendButton.addEventListener("click", function (event) {
+            if (subscribeCheckbox.checked) {
+                let fullName = document.forms[0].fullName.value;
+                let contactNumber = document.forms[0].contactNumber.value;
+                let emailAddress = document.forms[0].emailAddress.value;
+                let contact = new core.Contact(fullName, contactNumber, emailAddress);
+                if (contact.serialize()) {
+                    let key = contact.FullName.substring(0, 1) + Date.now();
+                    localStorage.setItem(key, contact.serialize());
+                }
+            }
+        });
+    }
+    function DisplayContactListPage() {
+        if (localStorage.length > 0) {
+            let contactList = document.getElementById("contactList");
+            let data = "";
+            let keys = Object.keys(localStorage);
+            let index = 1;
+            for (const key of keys) {
+                let contactData = localStorage.getItem(key);
+                let contact = new core.Contact();
+                contact.deserialize(contactData);
+                data += `<tr>
+                <th scope="row" class="text-center">${index}</th>
+                <td>${contact.FullName}</td>
+                <td>${contact.ContactNumber}</td>
+                <td>${contact.EmailAddress}</td>
+                <td class="text-center"><button value="${key}" class="btn btn-primary btn-sm edit"><i class="fas fa-edit fa-sm"></i> Edit</button></td>
+                <td class="text-center"><button value="${key}" class="btn btn-danger btn-sm delete"><i class="fas fa-trash-alt fa-sm"></i> Delete</button></td>
+                </tr>`;
+                index++;
+            }
+            contactList.innerHTML = data;
+            $("button.delete").on("click", function () {
+                if (confirm("Are you sure?")) {
+                    localStorage.removeItem($(this).val());
+                }
+                LoadLink("contact-list");
+            });
+            $("button.edit").on("click", function () {
+                LoadLink("edit", $(this).val());
+            });
+        }
+        $("#addButton").on("click", () => {
+            LoadLink("edit", "add");
+        });
+    }
+    function DisplayEditPage() {
+        console.log("Edit Page");
+        ContactFormValidation();
+        let page = router.LinkData;
+        switch (page) {
+            case "add":
+                {
+                    $("main>h1").text("Add Contact");
+                    $("#editButton").html(`<i class="fas fa-plus-circle fa-lg"></i> Add`);
+                    $("#editButton").on("click", (event) => {
+                        event.preventDefault();
+                        let fullName = document.forms[0].fullName.value;
+                        let contactNumber = document.forms[0].contactNumber.value;
+                        let emailAddress = document.forms[0].emailAddress.value;
+                        AddContact(fullName, contactNumber, emailAddress);
+                        LoadLink("contact-list");
+                    });
+                    $("#cancelButton").on("click", () => {
+                        LoadLink("contact-list");
+                    });
+                }
                 break;
-            case "Projects":
-                DisplayProjectsPage();
-                break;
-            case "Services":
-                DisplayServicesPage();
-                break;
-            case "About Us":
-                DisplayAboutUsPage();
-                break;
-            case "Contact Us":
-                DisplayContactPage();
-                break;
-            case "Register":
-                DisplayRegisterPage();
+            default:
+                {
+                    let contact = new core.Contact();
+                    contact.deserialize(localStorage.getItem(page));
+                    $("#fullName").val(contact.FullName);
+                    $("#contactNumber").val(contact.ContactNumber);
+                    $("#emailAddress").val(contact.EmailAddress);
+                    $("#editButton").on("click", (event) => {
+                        event.preventDefault();
+                        contact.FullName = $("#fullName").val();
+                        contact.ContactNumber = $("#contactNumber").val();
+                        contact.EmailAddress = $("#emailAddress").val();
+                        localStorage.setItem(page, contact.serialize());
+                        LoadLink("contact-list");
+                    });
+                    $("#cancelButton").on("click", () => {
+                        LoadLink("contact-list");
+                    });
+                }
                 break;
         }
     }
-
+    function CheckLogin() {
+        if (sessionStorage.getItem("user")) {
+            $("#login").html(`<a id="logout" class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>`);
+            if ($("#taskListLI").length) {
+            }
+            else {
+                AddTaskListToHotBar();
+            }
+            $("#logout").on("click", function () {
+                sessionStorage.clear();
+                $("#login").html(`<a class="nav-link" data="login"><i class="fas fa-sign-in-alt"></i> Login</a>`);
+                RemoveTaskListHotBar();
+                AddNavigationEvents();
+                LoadLink("login");
+            });
+        }
+    }
+    function DisplayLoginPage() {
+        console.log("Login Page");
+        let messageArea = $("#messageArea");
+        messageArea.hide();
+        AddLinkEvents("register");
+        $("#loginButton").on("click", function () {
+            let success = false;
+            let newUser = new core.User();
+            $.get("./Data/users.json", function (data) {
+                for (const user of data.users) {
+                    let username = document.forms[0].username.value;
+                    let password = document.forms[0].password.value;
+                    if (username == user.Username && password == user.Password) {
+                        newUser.fromJSON(user);
+                        success = true;
+                        break;
+                    }
+                }
+                if (success) {
+                    sessionStorage.setItem("user", newUser.serialize());
+                    messageArea.removeAttr("class").hide();
+                    LoadLink("contact-list");
+                }
+                else {
+                    $("#username").trigger("focus").trigger("select");
+                    messageArea.addClass("alert alert-danger").text("Error: Invalid Login Information").show();
+                }
+            });
+        });
+        $("#cancelButton").on("click", function () {
+            document.forms[0].reset();
+            LoadLink("home");
+        });
+    }
+    function DisplayRegisterPage() {
+        console.log("Register Page");
+        AddLinkEvents("login");
+    }
+    function Display404Page() {
+    }
+    function AddNewTask() {
+        let messageArea = $("#messageArea");
+        messageArea.hide();
+        let taskInput = $("#taskTextInput");
+        let taskInputValue = taskInput.val();
+        if (taskInput.val() != "" && taskInputValue.charAt(0) != " ") {
+            let newElement = `
+               <li class="list-group-item" id="task">
+               <span id="taskText">${taskInput.val()}</span>
+               <span class="float-end">
+                   <button class="btn btn-outline-primary btn-sm editButton"><i class="fas fa-edit"></i>
+                   <button class="btn btn-outline-danger btn-sm deleteButton"><i class="fas fa-trash-alt"></i></button>
+               </span>
+               <input type="text" class="form-control edit-task editTextInput">
+               </li>
+               `;
+            $("#taskList").append(newElement);
+            messageArea.removeAttr("class").hide();
+            taskInput.val("");
+        }
+        else {
+            taskInput.trigger("focus").trigger("select");
+            messageArea.show().addClass("alert alert-danger").text("Please enter a valid Task.");
+        }
+    }
+    function DisplayTaskList() {
+        console.log("Task-list Page");
+        let messageArea = $("#messageArea");
+        messageArea.hide();
+        let taskInput = $("#taskTextInput");
+        $("#newTaskButton").on("click", function () {
+            AddNewTask();
+        });
+        taskInput.on("keypress", function (event) {
+            if (event.key == "Enter") {
+                AddNewTask();
+            }
+        });
+        $("ul").on("click", ".editButton", function () {
+            let editText = $(this).parent().parent().children(".editTextInput");
+            let text = $(this).parent().parent().text();
+            let editTextValue = editText.val();
+            editText.val(text).show().trigger("select");
+            editText.on("keypress", function (event) {
+                if (event.key == "Enter") {
+                    if (editText.val() != "" && editTextValue.charAt(0) != " ") {
+                        editText.hide();
+                        $(this).parent().children("#taskText").text(editTextValue);
+                        messageArea.removeAttr("class").hide();
+                    }
+                    else {
+                        editText.trigger("focus").trigger("select");
+                        messageArea.show().addClass("alert alert-danger").text("Please enter a valid Task.");
+                    }
+                }
+            });
+        });
+        $("ul").on("click", ".deleteButton", function () {
+            if (confirm("Are you sure?")) {
+                $(this).closest("li").remove();
+            }
+        });
+    }
+    function AddTaskListToHotBar() {
+        console.log("testing the test");
+        $("#contactLI").after('<li class="nav-item">' +
+            '<a class="nav-link" data="task-list" id="taskListLI">' +
+            '<i class="fa-solid fa-list-check"></i>' +
+            'task list' +
+            '</a>' +
+            '</li>');
+        AddNavigationEvents();
+    }
+    function RemoveTaskListHotBar() {
+        $("#taskListLI").remove();
+    }
+    function ActiveLinkCallBack() {
+        switch (router.ActiveLink) {
+            case "home": return DisplayHomePage;
+            case "about": return DisplayAboutPage;
+            case "products": return DisplayProductsPage;
+            case "services": return DisplayServicesPage;
+            case "contact": return DisplayContactPage;
+            case "contact-list": return DisplayContactListPage;
+            case "edit": return DisplayEditPage;
+            case "login": return DisplayLoginPage;
+            case "register": return DisplayRegisterPage;
+            case "task-list": return DisplayTaskList;
+            case "404": return Display404Page;
+            default:
+                console.error("ERROR: callback does not exist: " + router.ActiveLink);
+                return new Function();
+        }
+    }
+    function Start() {
+        console.log("App Started!");
+        LoadHeader();
+        LoadLink("home");
+        LoadFooter();
+    }
+    window.addEventListener("load", Start);
 })();
-
+//# sourceMappingURL=app.js.map
