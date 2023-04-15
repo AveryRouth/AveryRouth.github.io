@@ -261,6 +261,7 @@
 
     function DisplayContactListPage(): void
     {
+        console.log()
         if(localStorage.length > 0)
         {
             let contactList = document.getElementById("contactList") as HTMLElement;
@@ -463,7 +464,7 @@
                     // hide any error message
                     messageArea.removeAttr("class").hide();
 
-                    // redirect the user to the secure area of our site - contact-list.html
+                    // redirect the user to the secure area of our site - contact-list.ejs
                     LoadLink("contact-list");
                 }
                 // else if bad credentials were entered...

@@ -1,1 +1,138 @@
-<h1>Our Products</h1>
+<<body>
+<div class="container">
+    <h1>My Projects</h1>
+
+    <!--
+        Gotten from the official YouTube api page on how to implement a YouTube players
+        Link: https://developers.google.com/youtube/iframe_api_reference
+    -->
+
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <div class="row align-items-start">
+        <div class = "row">
+            <div class="col">
+                <!--Col 0 -->
+                <div id="player"></div>
+            </div>
+            <div class="col">
+                <!--Col 1 -->
+                <p>
+                    We were tasked with creating a nature diorama that was small in scale with some degree
+                    of man-made structures that had been overtaken by nature. I based my project off of the
+                    roads leading to old Japanese shrines, set on a foggy day.
+                </p>
+            </div>
+        </div>
+        <div class = "row">
+            <div class="col">
+                <!--Col 2 -->
+                <p>
+                    This was a personal project for an art test. I was asked to create a smokescreen effect
+                     based on the smoke screen from the old splinter cell games. Once I submitted my art test
+                     the person running it said I had created what he wanted perfectly, which is why I am
+                    including it here.
+                </p>
+            </div>
+            <div class="col">
+                <!--Col 3 -->
+                <div id="player2"></div>
+            </div>
+        </div>
+        <div class = "row">
+            <div class="col">
+                <!--Col 4 -->
+                <div id="player3"></div>
+            </div>
+            <div class="col">
+                <!--Col 5 -->
+                <p>
+                    My goal was to create a system that would allow the player to teleport to a point"
+                     they are pointing at. It spawns a ball based on ray trace lines that sets the location
+                    for the player to teleport for. I did this as a personal project to try and recreate the
+                    teleportation system from the Dishonored games, and while far from perfect I feel like my
+                    system works fairly well.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!--this creates the youtube video players-->
+    <script>
+        // 2. This code loads the IFrame Player API code asynchronously.
+        let tag = document.createElement('script');
+
+        tag.src = "https://www.youtube.com/iframe_api";
+        let firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+        let player;
+        let player2;
+        let player3;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '390',
+                width: '640',
+                videoId: 'dRUZnmJ4GD8',
+                playerVars: {
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+            player2 = new YT.Player('player2', {
+                height: '390',
+                width: '640',
+                videoId: 'NPSrEGJBxQ4',
+                playerVars: {
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+            player3 = new YT.Player('player3', {
+                height: '390',
+                width: '640',
+                videoId: 'PWVxTx447eU',
+                playerVars: {
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        // 4. The API will call this function when the video player is ready.
+        function onPlayerReady(event) {
+            event.target.playVideo();
+        }
+
+        // 5. The API calls this function when the player's state changes.
+        //    The function indicates that when playing a video (state=1),
+        //    the player should play for six seconds and then stop.
+        var done = false;
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING && !done) {
+                setTimeout(stopVideo, 31000);
+                done = true;
+            }
+        }
+        function stopVideo() {
+            player.stopVideo();
+        }
+    </script>
+
+
+
+
+
+</div>
+
+</body>

@@ -7,7 +7,7 @@ namespace core
         private m_linkData: string;
         private m_routingTable: string[];
 
-        // public properties (getters and setters)
+        // client properties (getters and setters)
         
         /**
          * @returns {string}
@@ -55,7 +55,7 @@ namespace core
             this.m_routingTable = []; // creates an empty string array container
         }
 
-        // public methods
+        // client methods
 
         /**
          * This method adds a new route to the Routing Table
@@ -112,7 +112,7 @@ namespace core
             return false;
         }
 
-        // public override methods
+        // client override methods
 
         /**
          * This method overrides the built-in toString method and 

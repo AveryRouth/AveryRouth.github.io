@@ -7,7 +7,7 @@ namespace core
         private m_contactNumber: string;
         private m_emailAddress: string;
 
-        // public properties (getters and setters)
+        // client properties (getters and setters)
         public get FullName(): string
         {
             return this.m_fullName;
@@ -46,7 +46,7 @@ namespace core
             this.m_emailAddress = emailAddress;
         }
 
-        // public methods
+        // client methods
 
         /**
          * This method converts the object's properties to a comma-separated string
@@ -80,7 +80,7 @@ namespace core
             this.EmailAddress = propertyArray[2];
         }
 
-        // public overrides
+        // client overrides
 
         /**
          * This method overrides the built-in toString method 
